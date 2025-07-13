@@ -1,0 +1,12 @@
+{
+  "emi.category.indrev-emi-plugin.pulverize": "Pulverizing",
+  "emi.category.indrev-emi-plugin.infuse": "Infusing",
+  "emi.category.indrev-emi-plugin.compress": "Compressing",
+  "emi.category.indrev-emi-plugin.recycle": "Recycling",
+  "emi.category.indrev-emi-plugin.fluid_infuse": "Fluid Infusing",
+  "emi.category.indrev-emi-plugin.condenser": "Condensing",
+  "emi.category.indrev-emi-plugin.smelter": "Smelting",
+  "emi.category.indrev-emi-plugin.sawmill": "Milling",
+  "emi.category.indrev-emi-plugin.modules": "Module Crafting",
+  "emi.category.indrev-emi-plugin.laser": "Laser Charging"
+}

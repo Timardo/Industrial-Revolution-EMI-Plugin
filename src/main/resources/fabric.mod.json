@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "indrev-emi-plugin",
+	"version": "${version}",
+	"name": "Industrial Revolution EMI Plugin",
+	"description": "An addon for EMI recipe viewer to support Industrial Revolution recipes. Also fixes missing items.",
+	"authors": [
+		"Timardo"
+	],
+	"contact": {
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/indrev-emi-plugin/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.timardo.indrevemiplugin.IndustrialRevolutionEMIPlugin"
+		],
+        "emi": [
+          "net.timardo.indrevemiplugin.IndustrialRevolutionEMIPlugin"
+        ]
+	},
+    "mixins": [
+        "indrev-emi-plugin.mixins.json"
+    ],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"indrev": ">=1.16.5-BETA"
+	}
+}
