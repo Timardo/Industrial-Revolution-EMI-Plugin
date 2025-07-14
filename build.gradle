@@ -1,90 +1,74 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
-	id 'maven-publish'
+    id 'fabric-loom' version "${loom_version}"
+    id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
 
 base {
-	archivesName = project.archives_base_name
+    archivesName = project.archives_base_name
 }
 
 repositories {
-	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/"
-	}
-    maven {
-        url "https://cursemaven.com"
-    }
-    maven {
-        name = "CottonMC"
-        url = "https://server.bbkr.space/artifactory/libs-release"
-    }
-    maven {
-        url = "https://maven.draylar.dev/releases"
-        content {
-            includeGroup "dev.draylar"
-        }
-    }
-    maven {
-        name 'Jitpack for MI'
-        url 'https://jitpack.io'
-    }
+    maven { url 'https://maven.draylar.dev/releases' }
+    maven { url = "https://maven.terraformersmc.com/" }
+    maven { url "https://cursemaven.com" }
+    maven { url = "https://server.bbkr.space/artifactory/libs-release" }
+    // omega-config-base version 1.0.8-1.17 required by magna is no longer available anywhere (not even jitpack)
+    // thus this is required, the jar has been salvaged from the indrev jar itself
     flatDir {
        dirs("libs")
    }
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    // basic minecraft and Fabric stuff
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     
     // EMI
     modImplementation "dev.emi:emi-fabric:${emi_version}"
     
-    // Industrial Revolution 1.16.7-BETA
-    modImplementation "curse.maven:industrial-revolution-391708:5254377"
-    modImplementation "net.fabricmc:fabric-language-kotlin:1.13.4+kotlin.2.2.0"
-    modImplementation "io.github.cottonmc:LibGui:8.1.1+1.20.1"
-    modImplementation "teamreborn:energy:3.0.0"
-    modImplementation "com.github.Draylar:magna-1.10.0+1.20.1"
-    // local libs in the libs folder (omega is no longer available, Patchouli from maven repo had issues)
-    modImplementation "local:omega-config-base-1.0.8-1.17"
-    modImplementation "local:Patchouli-1.20.1-80-FABRIC"
-    modImplementation "local:fiber-0.23.0-2"
-    modImplementation "curse.maven:extra-mod-integrations-739970:6054082"
+    // Industrial Revolution 1.16.7-BETA from Curse maven
+    modImplementation "curse.maven:industrial-revolution-391708:${project.indrev_version_file_id}"
+    
+    // Industrial Revolution dependencies, Patchouli and entity step height have been ignored as they are not vital to the development
+    modRuntimeOnly "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+    modRuntimeOnly "io.github.cottonmc:LibGui:${project.libgui_version}"
+    modImplementation "teamreborn:energy:${project.teamreborn_energy_version}"
+    modRuntimeOnly "dev.draylar:magna:${project.magna_version}"
+    modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
+    
+    // Extra Mod Intergrations
+    modCompileOnly "curse.maven:extra-mod-integrations-739970:${project.extra_mod_integrations_version_file_id}"
 }
 
 processResources {
-	inputs.property "version", project.version
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": inputs.properties.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand "version": inputs.properties.version
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+    it.options.release = 17
 }
 
 java {
-	withSourcesJar()
+    withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 jar {
-	inputs.property "archivesName", project.base.archivesName
+    inputs.property "archivesName", project.base.archivesName
 
-	from("LICENSE") {
-		rename { "${it}_${inputs.properties.archivesName}"}
-	}
+    from("LICENSE") {
+        rename { "${it}_${inputs.properties.archivesName}"}
+    }
 }

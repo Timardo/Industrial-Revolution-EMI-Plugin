@@ -16,7 +16,7 @@ public class LaserWidgetFactory implements IWidgetFactory<LaserRecipe> {
     
     @Override
     public void addWidgets(WidgetHolder holder, IRMachineRecipe<LaserRecipe> recipe) {
-        // input slot 1
+        // input slot
         holder.addSlot(getOrEmpty(recipe.getInputs(), 0), loc(3.0), loc(1.8));
         
         int actualTime = (int)(recipe.getIRRecipe().getTicks() / ((MachineConfig)LASER_REGISTRY.config(LASER_REGISTRY.getTiers()[0])).getEnergyCost());

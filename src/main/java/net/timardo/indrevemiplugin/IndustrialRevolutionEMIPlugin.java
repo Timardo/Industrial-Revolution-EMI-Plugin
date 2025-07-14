@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-
+import net.timardo.indrevemiplugin.config.IREmiPluginConfig;
 import net.timardo.indrevemiplugin.widget.factory.CompressorWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.CondenserWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.FluidInfuserWidgetFactory;
@@ -24,13 +24,10 @@ import java.util.HashSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kneelawk.extramodintegrations.indrev.IRIntegration;
-
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.registry.EmiRecipes;
 import dev.emi.emi.registry.EmiStackList;
 
 import me.steven.indrev.api.machines.Tier;
@@ -55,7 +52,7 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	
 	@SuppressWarnings("unchecked")
-    public static final IRMachineCategory<IRRecipe>[] CATEGORIES = new IRMachineCategory[] {
+    private static final IRMachineCategory<IRRecipe>[] CATEGORIES = new IRMachineCategory[] {
             new IRMachineCategory<PulverizerRecipe>(PulverizerRecipe.Companion.getTYPE(), MachineRegistry.Companion.getPULVERIZER_REGISTRY(), new PulverizerWidgetFactory(), MachineRegistry.Companion.getPULVERIZER_FACTORY_REGISTRY()),
             new IRMachineCategory<InfuserRecipe>(InfuserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getSOLID_INFUSER_REGISTRY(), new SolidInfuserWidgetFactory(), MachineRegistry.Companion.getSOLID_INFUSER_FACTORY_REGISTRY()),
             new IRMachineCategory<CompressorRecipe>(CompressorRecipe.Companion.getTYPE(),MachineRegistry.Companion.getCOMPRESSOR_REGISTRY(), new CompressorWidgetFactory(), MachineRegistry.Companion.getCOMPRESSOR_FACTORY_REGISTRY()),
@@ -88,22 +85,28 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
     
     @Override
     public void register(EmiRegistry registry) {
-        registerChargedItems(registry);
-        registry.removeEmiStacks(IndustrialRevolutionEMIPlugin::removePredicate);
-        registerGamerAxe(registry);
-        registerMissingItems(registry);
-        registerCategories(registry);
-        registerRecipes(registry);
-        addElectricFurnaceToSmeltingCategory(registry);
-        //removeExtraModIntegrationRecipes();
-        EmiRecipes.categories.remove(IRIntegration.PULVERIZE_CATEGORY);
+        IREmiPluginConfig.INSTANCE.reload();
         
-        
-    }
-    
-    private void registerChargedItems(EmiRegistry registry) {
-        for (Item item : CHARGED_ITEMS) {
-            registerCharged(registry, item);
+        if (IREmiPluginConfig.INSTANCE.addChargedVersions) {
+            for (Item item : CHARGED_ITEMS) {
+                registerCharged(registry, item);
+            }
+            
+            registerGamerAxe(registry);
+        }
+
+        if (IREmiPluginConfig.INSTANCE.hideNotImplementedItems) {
+            registry.removeEmiStacks(IndustrialRevolutionEMIPlugin::removePredicate);
+        }
+
+        if (IREmiPluginConfig.INSTANCE.addMissingItems) {
+            registerMissingItems(registry);
+        }
+
+        if (IREmiPluginConfig.INSTANCE.addMachineRecipes) {
+            registerCategories(registry);
+            registerRecipes(registry);
+            addElectricFurnaceToSmeltingCategory(registry);
         }
     }
     

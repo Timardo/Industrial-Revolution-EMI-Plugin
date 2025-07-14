@@ -8,7 +8,7 @@
 		"Timardo"
 	],
 	"contact": {
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Timardo/Industrial-Revolution-EMI-Plugin"
 	},
 	"license": "MIT",
 	"icon": "assets/indrev-emi-plugin/icon.png",
