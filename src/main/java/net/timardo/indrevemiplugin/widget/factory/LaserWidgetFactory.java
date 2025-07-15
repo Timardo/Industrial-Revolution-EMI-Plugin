@@ -7,7 +7,7 @@ import me.steven.indrev.config.MachineConfig;
 import me.steven.indrev.recipes.machines.LaserRecipe;
 import me.steven.indrev.registry.MachineRegistry;
 import net.minecraft.text.Text;
-import net.timardo.indrevemiplugin.IRMachineRecipe;
+import net.timardo.indrevemiplugin.recipes.IRMachineRecipe;
 import net.timardo.indrevemiplugin.widget.IWidgetFactory;
 
 public class LaserWidgetFactory implements IWidgetFactory<LaserRecipe> {

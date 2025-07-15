@@ -6,12 +6,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+
 import net.timardo.indrevemiplugin.config.IREmiPluginConfig;
+import net.timardo.indrevemiplugin.recipes.IRMachineRecipe;
+import net.timardo.indrevemiplugin.recipes.MiningRigRecipeWrapper;
 import net.timardo.indrevemiplugin.widget.factory.CompressorWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.CondenserWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.FluidInfuserWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.LaserWidgetFactory;
+import net.timardo.indrevemiplugin.widget.factory.MiningRigWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.ModularWorkbenchWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.PulverizerWidgetFactory;
 import net.timardo.indrevemiplugin.widget.factory.RecyclerWidgetFactory;
@@ -29,8 +35,10 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.registry.EmiStackList;
-
+import kotlin.UninitializedPropertyAccessException;
 import me.steven.indrev.api.machines.Tier;
+import me.steven.indrev.config.IRConfig;
+import me.steven.indrev.config.MiningRigConfig;
 import me.steven.indrev.recipes.machines.CompressorRecipe;
 import me.steven.indrev.recipes.machines.CondenserRecipe;
 import me.steven.indrev.recipes.machines.FluidInfuserRecipe;
@@ -42,6 +50,8 @@ import me.steven.indrev.recipes.machines.PulverizerRecipe;
 import me.steven.indrev.recipes.machines.RecyclerRecipe;
 import me.steven.indrev.recipes.machines.SawmillRecipe;
 import me.steven.indrev.recipes.machines.SmelterRecipe;
+import me.steven.indrev.recipes.machines.entries.InputEntry;
+import me.steven.indrev.recipes.machines.entries.OutputEntry;
 import me.steven.indrev.registry.IRItemRegistry;
 import me.steven.indrev.registry.MachineRegistry;
 import me.steven.indrev.utils.EnergyutilsKt;
@@ -57,13 +67,15 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
             new IRMachineCategory<InfuserRecipe>(InfuserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getSOLID_INFUSER_REGISTRY(), new SolidInfuserWidgetFactory(), MachineRegistry.Companion.getSOLID_INFUSER_FACTORY_REGISTRY()),
             new IRMachineCategory<CompressorRecipe>(CompressorRecipe.Companion.getTYPE(),MachineRegistry.Companion.getCOMPRESSOR_REGISTRY(), new CompressorWidgetFactory(), MachineRegistry.Companion.getCOMPRESSOR_FACTORY_REGISTRY()),
             new IRMachineCategory<RecyclerRecipe>(RecyclerRecipe.Companion.getTYPE(), MachineRegistry.Companion.getRECYCLER_REGISTRY(), new RecyclerWidgetFactory()),
-            new IRMachineCategory<FluidInfuserRecipe>(FluidInfuserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getFLUID_INFUSER_REGISTRY(), new FluidInfuserWidgetFactory()),
+            new IRMachineCategory<FluidInfuserRecipe>(FluidInfuserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getFLUID_INFUSER_REGISTRY(), new FluidInfuserWidgetFactory(), true),
             new IRMachineCategory<CondenserRecipe>(CondenserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getCONDENSER_REGISTRY(), new CondenserWidgetFactory()),
             new IRMachineCategory<SmelterRecipe>(SmelterRecipe.Companion.getTYPE(), MachineRegistry.Companion.getSMELTER_REGISTRY(), new SmelterWidgetFactory()),
             new IRMachineCategory<SawmillRecipe>(SawmillRecipe.Companion.getTYPE(), MachineRegistry.Companion.getSAWMILL_REGISTRY(), new SawmillWidgetFactory()),
             new IRMachineCategory<ModuleRecipe>(ModuleRecipe.Companion.getTYPE(), MachineRegistry.Companion.getMODULAR_WORKBENCH_REGISTRY(), new ModularWorkbenchWidgetFactory()),
             new IRMachineCategory<LaserRecipe>(LaserRecipe.Companion.getTYPE(), MachineRegistry.Companion.getLASER_EMITTER_REGISTRY(), new LaserWidgetFactory())
     };
+	
+	private static final IRMachineCategory<MiningRigRecipeWrapper> MINING_RIG_CATEGORY = new IRMachineCategory<MiningRigRecipeWrapper>(MiningRigRecipeWrapper.TYPE_WRAPPER, MachineRegistry.Companion.getMINING_RIG_REGISTRY(), new MiningRigWidgetFactory(), 72, 22);
     
     private static final Item[] CHARGED_ITEMS = new Item[] {
             IRItemRegistry.INSTANCE.getMINING_DRILL_MK1(),
@@ -80,7 +92,7 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Let there be recipes. And items.");
+		LOGGER.info("Let there be recipes! And items.");
 	}
     
     @Override
@@ -108,6 +120,10 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
             registerRecipes(registry);
             addElectricFurnaceToSmeltingCategory(registry);
         }
+        
+        if (IREmiPluginConfig.INSTANCE.addMiningRigRecipes) {
+            registerMiningRigRecipes(registry);
+        }
     }
     
     private void registerCharged(EmiRegistry registry, Item item) {
@@ -128,6 +144,7 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
     
     private static final boolean removePredicate(EmiStack stack) {
         Identifier id = stack.getId();
+        
         return id == null ? false : HiddenitemsKt.hide(id);
     }
     
@@ -169,8 +186,6 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
                 registry.addWorkstation(category, EmiStack.of(category.getFactoryRegistry().block(category.getFactoryRegistry().getTiers()[0])));
             }
         }
-        
-        // TODO: add mining rig "recipes"
     }
     
     private void registerRecipes(EmiRegistry registry) {
@@ -178,6 +193,35 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
             // register recipes for each category
             for (IRRecipe recipe : registry.getRecipeManager().listAllOfType(category.getType())) {
                 registry.addRecipe(new IRMachineRecipe<IRRecipe>(recipe, category));
+            }
+        }
+    }
+    
+    private void registerMiningRigRecipes(EmiRegistry registry) {
+        MiningRigConfig rigConfig = null;
+        try {
+            rigConfig = IRConfig.INSTANCE.getMiningRigConfig();
+        }
+        
+        catch (UninitializedPropertyAccessException e) {
+            LOGGER.error("Industrial Revolution config not initialized. Skipping mining rig recipes registration.");
+            return;
+        }
+        
+        registry.addCategory(MINING_RIG_CATEGORY);
+        
+        for (Tier tier : MINING_RIG_CATEGORY.getRegistry().getTiers()) {
+            registry.addWorkstation(MINING_RIG_CATEGORY, EmiStack.of(MINING_RIG_CATEGORY.getRegistry().block(tier)));
+        }
+        
+        for (var allowedTag : rigConfig.getAllowedTags().entrySet()) {
+            TagKey<Item> outputTag = TagKey.of(RegistryKeys.ITEM, new Identifier(allowedTag.getKey()));
+            
+            for (var item : Registries.ITEM.getEntryList(outputTag).get()) {
+                InputEntry[] inputEntry = new InputEntry[] { };
+                OutputEntry[] outputEntry = new OutputEntry[] { new OutputEntry(new ItemStack(item), 1) };
+                MiningRigRecipeWrapper wrappedRecipe = new MiningRigRecipeWrapper(new Identifier(MOD_ID, "/" + item.getKey().get().getValue().toString().replace(':', '_')), inputEntry, outputEntry, 1000);
+                registry.addRecipe(new IRMachineRecipe<MiningRigRecipeWrapper>(wrappedRecipe, MINING_RIG_CATEGORY));
             }
         }
     }

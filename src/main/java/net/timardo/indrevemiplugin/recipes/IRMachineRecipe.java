@@ -1,4 +1,4 @@
-package net.timardo.indrevemiplugin;
+package net.timardo.indrevemiplugin.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ import me.steven.indrev.recipes.machines.entries.OutputEntry;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.minecraft.util.Identifier;
+import net.timardo.indrevemiplugin.IRMachineCategory;
 
 public class IRMachineRecipe<T extends IRRecipe> implements EmiRecipe {
 
@@ -58,12 +59,12 @@ public class IRMachineRecipe<T extends IRRecipe> implements EmiRecipe {
 
     @Override
     public int getDisplayWidth() {
-        return 170;
+        return this.category.getDisplayWidth();
     }
 
     @Override
     public int getDisplayHeight() {
-        return 75;
+        return this.category.getDisplayHeight();
     }
     
     public T getIRRecipe() {

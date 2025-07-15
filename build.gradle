@@ -36,7 +36,7 @@ dependencies {
     modImplementation "curse.maven:industrial-revolution-391708:${project.indrev_version_file_id}"
     
     // Industrial Revolution dependencies, Patchouli and entity step height have been ignored as they are not vital to the development
-    modRuntimeOnly "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
     modRuntimeOnly "io.github.cottonmc:LibGui:${project.libgui_version}"
     modImplementation "teamreborn:energy:${project.teamreborn_energy_version}"
     modRuntimeOnly "dev.draylar:magna:${project.magna_version}"

@@ -4,7 +4,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.PulverizerRecipe;
 import net.minecraft.text.Text;
-import net.timardo.indrevemiplugin.IRMachineRecipe;
+import net.timardo.indrevemiplugin.recipes.IRMachineRecipe;
 import net.timardo.indrevemiplugin.widget.IWidgetFactory;
 
 import static net.timardo.indrevemiplugin.widget.IWidgetFactory.loc;

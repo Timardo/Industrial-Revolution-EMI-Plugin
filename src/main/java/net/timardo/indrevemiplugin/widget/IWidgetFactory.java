@@ -7,7 +7,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.IRRecipe;
 import me.steven.indrev.recipes.machines.entries.OutputEntry;
-import net.timardo.indrevemiplugin.IRMachineRecipe;
+import net.timardo.indrevemiplugin.recipes.IRMachineRecipe;
 
 public interface IWidgetFactory<T extends IRRecipe> {
     void addWidgets(WidgetHolder holder, IRMachineRecipe<T> recipe);

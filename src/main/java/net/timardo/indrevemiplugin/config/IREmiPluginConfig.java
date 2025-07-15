@@ -26,6 +26,7 @@ public class IREmiPluginConfig {
     }
     
     public boolean addMachineRecipes = true;
+    public boolean addMiningRigRecipes = true;
     public boolean addChargedVersions = true;
     public boolean hideNotImplementedItems = true;
     public boolean addMissingItems = true;

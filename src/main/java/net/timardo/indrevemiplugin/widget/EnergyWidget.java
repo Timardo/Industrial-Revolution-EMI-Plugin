@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.runtime.EmiDrawContext;
-import me.steven.indrev.gui.tooltip.energy.EnergyTooltipData;
 import me.steven.indrev.gui.widgets.machines.WCustomBarKt;
 import me.steven.indrev.utils.UtilsKt;
 import net.minecraft.client.gui.DrawContext;

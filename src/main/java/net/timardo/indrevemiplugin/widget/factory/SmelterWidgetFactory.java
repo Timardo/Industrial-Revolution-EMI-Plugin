@@ -6,7 +6,7 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import me.steven.indrev.recipes.machines.SmelterRecipe;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.text.Text;
-import net.timardo.indrevemiplugin.IRMachineRecipe;
+import net.timardo.indrevemiplugin.recipes.IRMachineRecipe;
 import net.timardo.indrevemiplugin.widget.CustomTankWidget;
 import net.timardo.indrevemiplugin.widget.IWidgetFactory;
 
