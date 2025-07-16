@@ -108,38 +108,68 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
         }
 
         if (IREmiPluginConfig.INSTANCE.hideNotImplementedItems) {
-            registry.removeEmiStacks(IndustrialRevolutionEMIPlugin::removePredicate);
+            try {
+                registry.removeEmiStacks(IndustrialRevolutionEMIPlugin::removePredicate);
+            } catch (Exception e) {
+                LOGGER.error("An error occured while trying to hide stacks");
+                LOGGER.error(e.getMessage());
+            }
         }
 
         if (IREmiPluginConfig.INSTANCE.addMissingItems) {
-            registerMissingItems(registry);
+            try {
+                registerMissingItems(registry);
+            } catch (Exception e) {
+                LOGGER.error("An error occured while trying to add missing IndRev items");
+                LOGGER.error(e.getMessage());
+            }
         }
 
         if (IREmiPluginConfig.INSTANCE.addMachineRecipes) {
-            registerCategories(registry);
-            registerRecipes(registry);
-            addElectricFurnaceToSmeltingCategory(registry);
+            try {
+                registerCategories(registry);
+                registerRecipes(registry);
+                addElectricFurnaceToSmeltingCategory(registry);
+            } catch (Exception e) {
+                LOGGER.error("An error occured while trying to add missing IndRev recipes and categories");
+                LOGGER.error(e.getMessage());
+            }
         }
         
         if (IREmiPluginConfig.INSTANCE.addMiningRigRecipes) {
-            registerMiningRigRecipes(registry);
+            try {
+                registerMiningRigRecipes(registry);
+            } catch (Exception e) {
+                LOGGER.error("An exception occured while trying to add mining rig recipes");
+                LOGGER.error(e.getMessage());
+            }
         }
     }
     
     private void registerCharged(EmiRegistry registry, Item item) {
-        ItemStack fullEnergy = new ItemStack(item);
-        NbtCompound tag = fullEnergy.getOrCreateNbt();
-        tag.putLong("energy", EnergyutilsKt.energyOf(fullEnergy).getCapacity());
-        registry.addEmiStackAfter(EmiStack.of(fullEnergy), EmiStack.of(item));
+        try {
+            ItemStack fullEnergy = new ItemStack(item);
+            NbtCompound tag = fullEnergy.getOrCreateNbt();
+            tag.putLong("energy", EnergyutilsKt.energyOf(fullEnergy).getCapacity());
+            registry.addEmiStackAfter(EmiStack.of(fullEnergy), EmiStack.of(item));
+        } catch (Exception e) {
+            LOGGER.error("An exception occured while trying to register charged item " + item.toString());
+            LOGGER.error(e.getMessage());
+        }
     }
     
     private void registerGamerAxe(EmiRegistry registry) {
-        ItemStack activeGamerAxe = new ItemStack(IRItemRegistry.INSTANCE.getGAMER_AXE_ITEM());
-        NbtCompound tag = activeGamerAxe.getOrCreateNbt();
-        tag.putLong("energy", EnergyutilsKt.energyOf(activeGamerAxe).getCapacity());
-        tag.putBoolean("Active", true);
-        tag.putFloat("Progress", 1.0F);
-        registry.addEmiStackAfter(EmiStack.of(activeGamerAxe), EmiStack.of(IRItemRegistry.INSTANCE.getGAMER_AXE_ITEM()));
+        try {
+            ItemStack activeGamerAxe = new ItemStack(IRItemRegistry.INSTANCE.getGAMER_AXE_ITEM());
+            NbtCompound tag = activeGamerAxe.getOrCreateNbt();
+            tag.putLong("energy", EnergyutilsKt.energyOf(activeGamerAxe).getCapacity());
+            tag.putBoolean("Active", true);
+            tag.putFloat("Progress", 1.0F);
+            registry.addEmiStackAfter(EmiStack.of(activeGamerAxe), EmiStack.of(IRItemRegistry.INSTANCE.getGAMER_AXE_ITEM()));
+        } catch (Exception e) {
+            LOGGER.error("An exception occured while trying to register charged gamer axe");
+            LOGGER.error(e.getMessage());
+        }
     }
     
     private static final boolean removePredicate(EmiStack stack) {
@@ -199,6 +229,7 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
     
     private void registerMiningRigRecipes(EmiRegistry registry) {
         MiningRigConfig rigConfig = null;
+        
         try {
             rigConfig = IRConfig.INSTANCE.getMiningRigConfig();
         }

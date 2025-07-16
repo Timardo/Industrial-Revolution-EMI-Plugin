@@ -9,14 +9,19 @@ import net.timardo.indrevemiplugin.recipes.MiningRigRecipeWrapper;
 import net.timardo.indrevemiplugin.widget.IWidgetFactory;
 
 public class MiningRigWidgetFactory implements IWidgetFactory<MiningRigRecipeWrapper> {
-    private static final EmiIngredient DRILL_HEADS = EmiIngredient.of(Ingredient.ofItems(
-            IRItemRegistry.INSTANCE.getSTONE_DRILL_HEAD(),
-            IRItemRegistry.INSTANCE.getIRON_DRILL_HEAD(),
-            IRItemRegistry.INSTANCE.getDIAMOND_DRILL_HEAD(),
-            IRItemRegistry.INSTANCE.getNETHERITE_DRILL_HEAD()
-            ));
+    // cannot initialize at first class instantiation due to a bug in older EMI versions
+    private static EmiIngredient DRILL_HEADS;
+    
     @Override
     public void addWidgets(WidgetHolder holder, IRMachineRecipe<MiningRigRecipeWrapper> recipe) {
+        if (DRILL_HEADS == null) {
+            DRILL_HEADS = EmiIngredient.of(Ingredient.ofItems(
+                    IRItemRegistry.INSTANCE.getSTONE_DRILL_HEAD(),
+                    IRItemRegistry.INSTANCE.getIRON_DRILL_HEAD(),
+                    IRItemRegistry.INSTANCE.getDIAMOND_DRILL_HEAD(),
+                    IRItemRegistry.INSTANCE.getNETHERITE_DRILL_HEAD()
+                    ));
+        }
         // mining drillhead component
         holder.addSlot(DRILL_HEADS, 2, 2);
         

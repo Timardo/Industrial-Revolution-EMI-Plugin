@@ -22,6 +22,6 @@ public class SmelterWidgetFactory implements IWidgetFactory<SmelterRecipe> {
         holder.addText(Text.of(recipe.getIRRecipe().getTicks() / 20.0 + "s"), loc(4.8), loc(1.8) - 15, -1, false);
         
         // output tank
-        holder.add(new CustomTankWidget(getOrEmpty(recipe.getOutputs(), 0), loc(6.2) + 4, loc(1.0), 16, 43, FluidConstants.BUCKET * 8));
+        holder.add(new CustomTankWidget(getOrEmpty(recipe.getOutputs(), 0), loc(6.2) + 4, loc(1.0), 16, 43, FluidConstants.BUCKET * 8)).recipeContext(recipe);
     }
 }
