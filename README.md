@@ -5,9 +5,7 @@ Tested only with Industrial Revolution version 1.16.7-BETA
 
 # Download
 
-(projects are currently waiting for approval, compiled jar is in Releases)
-
-Modrinth: [https://modrinth.com/project/industrial-revolution-emi-plugin](https://modrinth.com/project/industrial-revolution-emi-plugin)
+Modrinth (still waiting for approval): [https://modrinth.com/project/industrial-revolution-emi-plugin](https://modrinth.com/project/industrial-revolution-emi-plugin)
 
 CurseForge: [https://www.curseforge.com/minecraft/mc-mods/industrial-revolution-emi-plugin](https://www.curseforge.com/minecraft/mc-mods/industrial-revolution-emi-plugin)
 
