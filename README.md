@@ -1,11 +1,11 @@
 # Industrial Revolution EMI plugin
-Adds recipes from [Industrial Revolution](https://github.com/GabrielOlvH/Industrial-Revolution) to EMI recipe viewer including all allowed ores in the Mining Rig. Additionally translates tags and fixes missing items. Almost every feature of the mod is configurable.
+Adds recipes from [Industrial Revolution](https://github.com/GabrielOlvH/Industrial-Revolution) to EMI recipe viewer including all allowed ores in the Mining Rig. Additionally translates tags and fixes missing items in the EMI index (they are still missing from creative menu). Almost every feature of the mod is configurable.
 
 Tested only with Industrial Revolution version 1.16.7-BETA
 
 # Download
 
-Modrinth (still waiting for approval): [https://modrinth.com/project/industrial-revolution-emi-plugin](https://modrinth.com/project/industrial-revolution-emi-plugin)
+Modrinth: [https://modrinth.com/project/industrial-revolution-emi-plugin](https://modrinth.com/project/industrial-revolution-emi-plugin)
 
 CurseForge: [https://www.curseforge.com/minecraft/mc-mods/industrial-revolution-emi-plugin](https://www.curseforge.com/minecraft/mc-mods/industrial-revolution-emi-plugin)
 
