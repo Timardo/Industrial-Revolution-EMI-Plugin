@@ -14,7 +14,7 @@
 	"icon": "assets/indrev-emi-plugin/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
+		"client": [
 			"net.timardo.indrevemiplugin.IndustrialRevolutionEMIPlugin"
 		],
         "emi": [

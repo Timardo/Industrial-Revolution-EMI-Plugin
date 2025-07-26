@@ -1,6 +1,6 @@
 package net.timardo.indrevemiplugin;
 
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,7 +57,7 @@ import me.steven.indrev.registry.MachineRegistry;
 import me.steven.indrev.utils.EnergyutilsKt;
 import me.steven.indrev.utils.HiddenitemsKt;
 
-public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin {
+public class IndustrialRevolutionEMIPlugin implements ClientModInitializer, EmiPlugin {
 	public static final String MOD_ID = "indrev-emi-plugin";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	
@@ -91,7 +91,7 @@ public class IndustrialRevolutionEMIPlugin implements ModInitializer, EmiPlugin 
     };
 
 	@Override
-	public void onInitialize() {
+	public void onInitializeClient() {
 		LOGGER.info("Let there be recipes! And items.");
 	}
     
